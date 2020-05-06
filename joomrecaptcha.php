@@ -1,10 +1,9 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/Plugins/JoomreCaptcha/trunk/joomrecaptcha.php $
-// $Id: joomrecaptcha.php 3746 2012-04-08 17:53:28Z chraneco $
 /******************************************************************************\
 **   JoomGallery Plugin 'JoomreCaptcha'2.0                                    **
 **   By: JoomGallery::ProjectTeam                                             **
 **   Copyright (C) 2010 - 2012  Chraneco                                      **
+**   Copyright (C) since 2019   JoomGallery::ProjectTeam                      **
 **   Modified for reCaptcha v2 by ericvb                                      **
 **   With some code from the PHP library that handles calling reCAPTCHA       **
 **   by Mike Crawford and Ben Maurer                                          **
@@ -114,7 +113,8 @@ class plgJoomGalleryJoomreCaptcha extends JPlugin
 	);
 	$options = array(
 		'http' => array (
-			'method' => 'POST',
+            'header'  => 'Content-Type: application/x-www-form-urlencoded\r\n',
+			'method'  => 'POST',
 			'content' => http_build_query($data)
 		)
 	);
