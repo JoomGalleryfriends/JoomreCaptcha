@@ -106,23 +106,23 @@ class plgJoomGalleryJoomreCaptcha extends JPlugin
     // Load the language file
     $this->loadLanguage();
 
-	$url = 'https://www.google.com/recaptcha/api/siteverify';
-	$data = array(
-		'secret' => $this->params->get('privatekey'),
-		'response' => JRequest::getVar('g-recaptcha-response')
-	);
-	$options = array(
-		'http' => array (
-            'header'  => 'Content-Type: application/x-www-form-urlencoded\r\n',
-			'method'  => 'POST',
-			'content' => http_build_query($data)
-		)
-	);
-	$context  = stream_context_create($options);
-	$verify = file_get_contents($url, false, $context);	
-	$captcha_response = json_decode($verify);
-	
-	if($captcha_response->success == true)
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $data = array(
+      'secret' => $this->params->get('privatekey'),
+      'response' => JRequest::getVar('g-recaptcha-response')
+    );
+    $options = array(
+      'http' => array (
+        'header'  => 'Content-Type: application/x-www-form-urlencoded\r\n',
+        'method'  => 'POST',
+        'content' => http_build_query($data)
+      )
+    );
+    $context  = stream_context_create($options);
+    $verify = file_get_contents($url, false, $context);
+    $captcha_response = json_decode($verify);
+
+    if($captcha_response->success == true)
     {
       $valid = true;
       $error = '';
