@@ -1,10 +1,9 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-2.0/Plugins/JoomreCaptcha/trunk/joomrecaptcha.php $
-// $Id: joomrecaptcha.php 3746 2012-04-08 17:53:28Z chraneco $
 /******************************************************************************\
 **   JoomGallery Plugin 'JoomreCaptcha'2.0                                    **
 **   By: JoomGallery::ProjectTeam                                             **
 **   Copyright (C) 2010 - 2012  Chraneco                                      **
+**   Copyright (C) since 2019   JoomGallery::ProjectTeam                      **
 **   Modified for reCaptcha v2 by ericvb                                      **
 **   With some code from the PHP library that handles calling reCAPTCHA       **
 **   by Mike Crawford and Ben Maurer                                          **
@@ -107,22 +106,23 @@ class plgJoomGalleryJoomreCaptcha extends JPlugin
     // Load the language file
     $this->loadLanguage();
 
-	$url = 'https://www.google.com/recaptcha/api/siteverify';
-	$data = array(
-		'secret' => $this->params->get('privatekey'),
-		'response' => JRequest::getVar('g-recaptcha-response')
-	);
-	$options = array(
-		'http' => array (
-			'method' => 'POST',
-			'content' => http_build_query($data)
-		)
-	);
-	$context  = stream_context_create($options);
-	$verify = file_get_contents($url, false, $context);	
-	$captcha_response = json_decode($verify);
-	
-	if($captcha_response->success == true)
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $data = array(
+      'secret' => $this->params->get('privatekey'),
+      'response' => JRequest::getVar('g-recaptcha-response')
+    );
+    $options = array(
+      'http' => array (
+        'header'  => 'Content-Type: application/x-www-form-urlencoded\r\n',
+        'method'  => 'POST',
+        'content' => http_build_query($data)
+      )
+    );
+    $context  = stream_context_create($options);
+    $verify = file_get_contents($url, false, $context);
+    $captcha_response = json_decode($verify);
+
+    if($captcha_response->success == true)
     {
       $valid = true;
       $error = '';
